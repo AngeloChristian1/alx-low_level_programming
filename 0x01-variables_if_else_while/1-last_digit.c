@@ -13,15 +13,15 @@ int main(void)
 	/* your code goes there */
 	if (n>5)
 	{
-		print("%d is greater than 5,n")
+		printf("%d is greater than 5,n")
 	}
 	else if (n==0)
 	{
-		print("%d is equal to zero",n)
+		printf("%d is equal to zero",n)
 	}
 	else
 	{
-		print("%d is less than six and not zero")
+		printf("%d is less than six and not zero")
 	}
 	return (0);
 }
