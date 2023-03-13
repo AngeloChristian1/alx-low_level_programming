@@ -19,12 +19,12 @@ static int count_words(char *str)
     return (count);
 }
 
-/**
- * strtow - Split a string into words.
- * @str: The input string.
- *
- * Return: A pointer to an array of strings (words), or NULL if failure.
- */
+
+
+
+
+
+
 char **strtow(char *str)
 {
     char **words;
