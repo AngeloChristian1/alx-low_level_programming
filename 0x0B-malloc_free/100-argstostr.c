@@ -1,10 +1,10 @@
 #include "main.h"
-/*
- * *argstostr(int ac, char **av)-function that concatenates teo strings
- * @ac:value in will use for malloc
- * @av:string to use
- * Returns NULL if fail
- * */
+/**
+ * argstostr - concatenate all arguments of your program with newline
+ * @ac: argument count
+ * @av: double pointer to array of strings passed to main
+ * Return: Null if fail, else return pointer to new string
+ */
 char *argstostr(int ac, char **av)
 {
 	char *a, *retp;
