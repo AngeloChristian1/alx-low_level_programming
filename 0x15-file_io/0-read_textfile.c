@@ -1,28 +1,32 @@
 #include "main.h"
 
 /**
- * read_textfile - Read file and print to POSIX stdout
- * @filename: The source file
- * @letters: number of letters to read and print
- * Return: number of letters read and printed
+ * read_textfile - reads a textfile
+ * @filename: file to read
+ * @letters: amount of bytes to read
+ * Return: printed letters count
  */
-
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	int fd, counted;
-	char *buffer = malloc(sizeof(char *) * letters);
+	int fd, printed, wrote;
+	char *buff;
 
-	if (!buffer || !filename)
+	buff = malloc(letters);
+	if (buff == NULL)
 		return (0);
-
-	fd = open(filename, O_RDONLY, 0600);
+	if (filename == NULL)
+		return (0);
+	fd = open(filename, O_RDWR);
 	if (fd == -1)
 		return (0);
-
-	counted = read(fd, buffer, letters);
-	write(STDOUT_FILENO, buffer, counted);
-
-	free(buffer);
-	close(fd);
-	return (counted);
+	printed = read(fd, buff, letters);
+	if (printed == -1)
+		return (0);
+	wrote = write(STDOUT_FILENO, buff, printed);
+	if (wrote == -1)
+		return (0);
+	if (close(fd) == -1)
+		return (0);
+	free(buff);
+	return (printed);
 }
