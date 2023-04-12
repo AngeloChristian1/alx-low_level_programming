@@ -1,69 +1,57 @@
 #include "main.h"
-#include <stdio.h>
-#include <stdarg.h>
 
 /**
-  * main - The main function
-  * @argc: arg count
-  * @argv: arg vector
-  *
-  * Return: ...
-  */
-
+ * main - function to copy
+ * @argc: argument count
+ * @argv: argument vector
+ * Return: ...
+ */
 int main(int argc, char **argv)
 {
+	int fdFrum, fdToo, wrote, readed;
+	char buff[1024];
+
 	if (argc != 3)
 	{
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
-
-	copy_file(argv[1], argv[2]);
-	exit(0);
-}
-
-/**
-  * copy_file - copies content of 1 file to another
-  * @src: File to copy frpm
-  * @dest: File to copy to
-  */
-void copy_file(const char *src, const char *dest)
-{
-	int ofd, tfd, readed;
-	char buff[1024];
-
-	ofd = open(src, O_RDONLY);
-	if (!src || ofd == -1)
+	fdFrum = open(argv[1], O_RDONLY);
+	if (fdFrum == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", src);
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		exit(98);
 	}
-
-	tfd = open(dest, O_CREAT | O_WRONLY | O_TRUNC, 0664);
-	while ((readed = read(ofd, buff, 1024)) > 0)
+	fdToo = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	if (fdToo == -1)
 	{
-		if (write(tfd, buff, readed) != readed || tfd == -1)
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+		exit(99);
+	}
+	while ((readed = read(fdFrum, buff, 1024)) > 0)
+	{
+		wrote = write(fdToo, buff, readed);
+		if (wrote == -1)
 		{
-			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", dest);
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
 			exit(99);
 		}
 	}
-
 	if (readed == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", src);
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
 		exit(98);
 	}
-
-	if (close(ofd) == -1)
+	if (close(fdFrum) == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", ofd);
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d", fdFrum);
 		exit(100);
 	}
-
-	if (close(tfd) == -1)
+	if (close(fdToo) == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", tfd);
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d", fdToo);
 		exit(100);
 	}
+	return (0);
 }
+
